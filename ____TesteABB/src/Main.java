@@ -2,7 +2,7 @@ package mackbemvindo;
 
 import java.util.Scanner;
 
-public class SistemaMackBemVindo {
+public class Main {
 
     private static ABB<Funcionario> abb = new ABB<>();
     private static Scanner sc = new Scanner(System.in);
