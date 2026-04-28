@@ -1,13 +1,16 @@
-package ____TesteABB;
+package mackbemvindo;
 
-//Classe ABB<T>: encarregada de manipular a estrutura de dados
-//árvore de busca binária (ABB) genérica.
+import java.util.LinkedList;
+
+// Classe ABB<T>: encarregada de manipular a estrutura de dados
+// árvore de busca binária (ABB) genérica.
 //
-//Autor1: Ivan Carlos Alcântara de Oliveira.
-//Data da Criação: 04/14/2026. 15h.
+// Autor1: Ivan Carlos Alcântara de Oliveira.
+// Data da Criação: 04/14/2026. 15h.
 public class ABB<T extends Comparable<T>> {   
 
-    private Node<T> raiz; // Nó raiz da ABB
+    // Nó raiz da ABB
+    private Node<T> raiz; 
 
     // Construtor da ABB
     public ABB() {
@@ -31,11 +34,13 @@ public class ABB<T extends Comparable<T>> {
 
     // Procura o elemento e na ABB
     public Node<T> search(T e){
-    	return search( raiz, e );
+        return search( raiz, e );
     }
-    // Método que procura o elemento e na ABB de raiz
+    
+    // Método que procura o elemento e na ABB de raiz.
+    // Retorna null caso o elemento não seja encontrado.
     public Node<T> search( Node<T> node, T e ){
-        if (node == null) // elemento não foi encontrado
+        if (node == null) 
             return null;
         else if (compara(e, node.getValue()) == 0)
             return node;
@@ -57,8 +62,7 @@ public class ABB<T extends Comparable<T>> {
         }
     }
 
-    // Método que realiza a inserção de um novo nó (novo) 
-    // na ABB 
+    // Método que realiza a inserção de um novo nó (novo) na ABB 
     private Node<T> inserir(Node<T> novo, Node<T> atual) {
         if (atual == null) {
             return novo;
@@ -141,16 +145,15 @@ public class ABB<T extends Comparable<T>> {
         }
     }
 
-    // Método que percorre a ABB em Nível
-    // e imprime os valores dos nós
+    // Método iterativo que percorre a ABB em Nível e imprime os valores dos nós.
+    // Utiliza uma LinkedList funcionando como uma fila auxiliar 
+    // (adicionando elementos no final e removendo do começo).
     public void emNivel() {
-        //Método iterativo que utiliza uma fila auxiliar
         Node<T> noAux;
-        // Observe que a LinkedList está funcionando como uma Fila
         LinkedList<Node<T>> fila = new LinkedList<Node<T>>();
-        fila.addLast(raiz);  // Adiciona no Final
+        fila.addLast(raiz);
         while (!fila.isEmpty()) {
-            noAux = (Node<T>) fila.pollFirst();  // Remove do Começo
+            noAux = (Node<T>) fila.pollFirst();
             if (noAux.getFilhoEsquerdo() != null) {
                 fila.addLast(noAux.getFilhoEsquerdo());
             }
@@ -161,12 +164,137 @@ public class ABB<T extends Comparable<T>> {
         }
     }
 
-    // Método que compara dois objetos  do tipo T genérico)
+    // Mudança aqui: Método encarregado de chamar o método que percorre a ABB 
+    // emOrdem e exibe todos os funcionários, retornando a quantidade (Opção 2)
+    public int mostrarTodos() {
+        return mostrarTodos(raiz);
+    }
+
+    // Mudança aqui: Método que percorre a árvore emOrdem contando e exibindo os nós
+    private int mostrarTodos(Node<T> no) {
+        if (no == null) {
+            return 0;
+        }
+        
+        int qtde = 0;
+        qtde = qtde + mostrarTodos(no.getFilhoEsquerdo());
+        
+        System.out.println(no.getValue());
+        qtde = qtde + 1;
+        
+        qtde = qtde + mostrarTodos(no.getFilhoDireito());
+        return qtde;
+    }
+
+    // Mudança aqui: Método encarregado de chamar o método que percorre a ABB 
+    // emOrdem para somar todos os salários (Opção 3)
+    public double calcularSalarios() {
+        return calcularSalarios(raiz);
+    }
+
+    // Mudança aqui: Método que percorre a árvore emOrdem acumulando os salários
+    private double calcularSalarios(Node<T> no) {
+        if (no == null) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+        total = total + calcularSalarios(no.getFilhoEsquerdo());
+
+        if (no.getValue() instanceof Funcionario) {
+            Funcionario f = (Funcionario) no.getValue();
+            total = total + f.getSalario();
+        }
+
+        total = total + calcularSalarios(no.getFilhoDireito());
+        return total;
+    }
+
+    // Mudança aqui: Método encarregado de chamar o método que percorre a ABB 
+    // buscando funcionários por um sexo específico (Opção 4)
+    public int contarPorSexo(char sexo) {
+        return contarPorSexo(raiz, Character.toUpperCase(sexo));
+    }
+
+    // Mudança aqui: Método que percorre a árvore emOrdem contando funcionários do sexo informado
+    private int contarPorSexo(Node<T> no, char sexo) {
+        if (no == null) {
+            return 0;
+        }
+
+        int count = 0;
+        count = count + contarPorSexo(no.getFilhoEsquerdo(), sexo);
+
+        if (no.getValue() instanceof Funcionario) {
+            Funcionario f = (Funcionario) no.getValue();
+            if (f.getSexo() == sexo) {
+                count = count + 1;
+            }
+        }
+
+        count = count + contarPorSexo(no.getFilhoDireito(), sexo);
+        return count;
+    }
+
+    // Mudança aqui: Método encarregado de chamar o método que percorre a ABB 
+    // buscando funcionários por uma categoria específica (Opção 5)
+    public int contarPorCategoria(char categoria) {
+        return contarPorCategoria(raiz, Character.toUpperCase(categoria));
+    }
+
+    // Mudança aqui: Método que percorre a árvore emOrdem contando funcionários da categoria informada
+    private int contarPorCategoria(Node<T> no, char categoria) {
+        if (no == null) {
+            return 0;
+        }
+
+        int count = 0;
+        count = count + contarPorCategoria(no.getFilhoEsquerdo(), categoria);
+
+        if (no.getValue() instanceof Funcionario) {
+            Funcionario f = (Funcionario) no.getValue();
+            if (f.getCategoria() == categoria) {
+                count = count + 1;
+            }
+        }
+
+        count = count + contarPorCategoria(no.getFilhoDireito(), categoria);
+        return count;
+    }
+
+    // Mudança aqui: Método encarregado de chamar o método que percorre a ABB 
+    // e mostra os funcionários que têm idade maior ou igual ao limite (Opção 6)
+    public int mostrarPorIdade(int idadeMinima) {
+        return mostrarPorIdade(raiz, idadeMinima);
+    }
+
+    // Mudança aqui: Método que percorre a árvore emOrdem filtrando os nós pela idade mínima
+    private int mostrarPorIdade(Node<T> no, int idadeMinima) {
+        if (no == null) {
+            return 0;
+        }
+
+        int count = 0;
+        count = count + mostrarPorIdade(no.getFilhoEsquerdo(), idadeMinima);
+
+        if (no.getValue() instanceof Funcionario) {
+            Funcionario f = (Funcionario) no.getValue();
+            if (f.getIdade() >= idadeMinima) {
+                System.out.println(f);
+                count = count + 1;
+            }
+        }
+
+        count = count + mostrarPorIdade(no.getFilhoDireito(), idadeMinima);
+        return count;
+    }
+
+    // Método que compara dois objetos do tipo T genérico
     private int compara(T ob1, T ob2) {
         return ob1.compareTo( ob2);
     }
     
-    //Determina o menor elemento a partir de um nó
+    // Determina o menor elemento a partir de um nó
     public Node<T> getMenor(Node<T> node) {
         if (isEmpty()) {
             return null;
@@ -178,7 +306,7 @@ public class ABB<T extends Comparable<T>> {
         }
     }
 
-    //Determina o maior elemento a partir de um nó
+    // Determina o maior elemento a partir de um nó
     public Node<T> getMaior(Node<T> node) {
         if (isEmpty()) {
             return null;
@@ -190,19 +318,17 @@ public class ABB<T extends Comparable<T>> {
         }
     }
 
-    // Obtém o maior elemento a partir de um nó
+    // Obtém o maior elemento a partir de um nó.
+    // Se não tiver mais filho direito e houver um pai, ele assume o filho esquerdo da raiz atual.
     public Node<T> getMax(Node<T> raiz, Node<T> paiRaiz) {
         if (isEmpty()) {
             return null;
         }
         Node<T> aux;
-        //Se não tiver mais filho direito
         if (raiz.getFilhoDireito() == null) {
             aux = raiz;
-            //Se tiver um pai, ele assume o filho esquerdo
             if (paiRaiz != null) {
-                if (paiRaiz.getFilhoEsquerdo() == raiz) // se é filho esquerdo
-                {
+                if (paiRaiz.getFilhoEsquerdo() == raiz) {
                     paiRaiz.setFilhoEsquerdo(raiz.getFilhoEsquerdo());
                 } else {
                     paiRaiz.setFilhoDireito(raiz.getFilhoEsquerdo());
@@ -220,69 +346,64 @@ public class ABB<T extends Comparable<T>> {
         return eliminar(raiz, null, e);
     }
 
-    //Remove um elemento da árvore e retorna true ou false
+    // Remove um elemento da árvore e retorna true ou false.
+    // Trata os cenários de remoção: quando o nó não possui filhos, possui apenas um, 
+    // ou possui ambos, reajustando as referências do pai (deserdando ou adotando o neto).
+    // Caso não encontre na raiz atual, prossegue com busca recursiva.
     private boolean eliminar(Node<T> node, Node<T> paiRaiz, T e) {
         Node<T> aux;
-        if (node == null) {  // não achou o elemento, não existe (chegou na folha)
+        if (node == null) {  
             return false;
-        } else { // a árvore ou sub-árvore não está vazia
-            if (compara(e, node.getValue()) == 0) {  // o nó a eliminar está na raiz
+        } else { 
+            if (compara(e, node.getValue()) == 0) {  
                 aux = node;
-                //Se o nó não possui filhos, basta sumir com o nó
                 if (node.getFilhoEsquerdo() == null && node.getFilhoDireito() == null) {
-                    //Se não tiver pai, é a raiz da árvore
                     if (paiRaiz == null) {
                         setRaiz(null);
-                    } //Senão, o pai deve "deserdar" o filho
+                    } 
                     else {
-                        //Verifica se o nó que será eliminado é o filho esquerdo ou direito  do pai:
                         if (paiRaiz.getFilhoEsquerdo() != null && compara(paiRaiz.getFilhoEsquerdo().getValue(), e) == 0) {
                             paiRaiz.setFilhoEsquerdo(null);
                         } else if (paiRaiz.getFilhoDireito() != null && compara(paiRaiz.getFilhoDireito().getValue(), e) == 0) {
                             paiRaiz.setFilhoDireito(null);
                         }
                     }
-                } else if (node.getFilhoDireito() == null) {   // se só tiver o filho esquerdo
-                    //Se tiver um pai, ele assume o filho esquerdo
+                } else if (node.getFilhoDireito() == null) {   
                     if (paiRaiz != null) {
-                        //Verifica se a raiz é filho esquerdo ou direito para assumir o neto
                         if (paiRaiz.getFilhoEsquerdo() != null && compara(paiRaiz.getFilhoEsquerdo().getValue(), e) == 0) {
                             paiRaiz.setFilhoEsquerdo(node.getFilhoEsquerdo());
                         } else {
                             paiRaiz.setFilhoDireito(node.getFilhoEsquerdo());
                         }
-                    } //Se não tiver pai (caso da raiz), adotar seu filho esquerdo
+                    } 
                     else {
                         node.setValue(node.getFilhoEsquerdo().getValue());
                         node.setFilhoEsquerdo(node.getFilhoEsquerdo().getFilhoEsquerdo());
                         node.setFilhoDireito(node.getFilhoEsquerdo().getFilhoDireito());
                     }
-                } else if (node.getFilhoEsquerdo() == null) {   // se só tiver o filho direito
-                    //Se tiver um pai, ele assume o filho esquerdo
+                } else if (node.getFilhoEsquerdo() == null) {   
                     if (paiRaiz != null) {
-                        //Verifica se a raiz é filho esquerdo ou direito para assumir o neto
                         if (paiRaiz.getFilhoEsquerdo() != null && compara(paiRaiz.getFilhoEsquerdo().getValue(), e) == 0) {
                             paiRaiz.setFilhoEsquerdo(node.getFilhoDireito());
                         } else {
                             paiRaiz.setFilhoDireito(node.getFilhoDireito());
                         }
-                    } //Se não tiver pai (caso da raiz), adotar seu filho esquerdo
+                    } 
                     else {
                         node.setValue(node.getFilhoDireito().getValue());
                         node.setFilhoEsquerdo(node.getFilhoDireito().getFilhoEsquerdo());
                         node.setFilhoDireito(node.getFilhoDireito().getFilhoDireito());
                     }
-                } else {   //Raiz possui os 2 filhos
+                } else {   
                     aux = getMax(node.getFilhoEsquerdo(), node);
                     node.setValue(aux.getValue());
                 }
                 aux = null;
                 return true;
-            } else { //Se não achou o nó a eliminar na raiz, continue procurando recursivamente:
-                //Se for menor que a raiz, continuar procurando à esquerda
+            } else { 
                 if (compara(e, node.getValue()) < 0) {
                     return eliminar(node.getFilhoEsquerdo(), node, e);
-                } else { // ou à direita
+                } else { 
                     return eliminar(node.getFilhoDireito(), node, e);
                 }
             }
