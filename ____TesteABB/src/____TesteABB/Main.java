@@ -1,4 +1,4 @@
-package mackbemvindo;
+package ____TesteABB;
 
 import java.util.Scanner;
 
@@ -34,7 +34,7 @@ public class Main {
 
     private static void exibirMenu() {
         System.out.println();
-        System.out.println("    --   Sistema MackBemVindo   --");
+        System.out.println("    --   Sistema de Funcionários   --");
         System.out.println(" 1 - Cadastrar funcionário ");
         System.out.println(" 2 - Mostrar dados de todos os funcionários");
         System.out.println(" 3 - Mostrar gastos com salários");
@@ -202,7 +202,7 @@ public class Main {
         System.out.print("  Deseja realmente sair do sistema? (S/N): ");
         String resp = sc.nextLine().trim().toUpperCase();
         if (resp.equals("S")) {
-            System.out.println("\n  Encerrando o Sistema MackBemVindo. Até logo!");
+            System.out.println("\n  Encerrando o sistema. Até logo!");
             System.exit(0);
         } else {
             System.out.println("  Operação cancelada. Retornando ao menu...");
