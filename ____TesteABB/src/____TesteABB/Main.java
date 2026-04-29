@@ -118,6 +118,34 @@ public class Main {
         System.out.printf("  Total de funcionários do sexo %s: %d%n", desc, count);
     }
 
+    // OPÇÃO 5 – Mostrar total de funcionários de determinada categoria
+    private static void opcao5_totalPorCategoria() {
+        System.out.println("─── Total de Funcionários por Categoria ──────────");
+
+        if (abb.isEmpty()) {
+            System.out.println("  Nenhum funcionário cadastrado.");
+            return;
+        }
+
+        char categoria = lerChar("  Informe a categoria (P/O/H): ", new char[]{'P', 'O', 'H'});
+        int count = abb.contarPorCategoria(categoria);
+        System.out.printf("  Total de funcionários da categoria %c: %d%n", categoria, count);
+    }
+
+    // OPÇÃO 6 – Mostrar total de funcionários de determinada idade
+    private static void opcao6_funcionariosPorIdade() {
+        System.out.println("─── Total de Funcionários por Idade ───────────────");
+
+        if (abb.isEmpty()) {
+            System.out.println("  Nenhum funcionário cadastrado.");
+            return;
+        }
+
+        int idade = lerInteiro("  Informe a idade: ", 0, true);
+        int count = abb.contarPorIdade(idade);
+        System.out.printf("  Total de funcionários com %d anos: %d%n", idade, count);
+    }
+
     // OPÇÃO 7 – Simular cadastro de funcionários (insere 20 funcionários)
     private static void opcao7_simularCadastro() {
         System.out.println("─── Simulação: Cadastro de 20 Funcionários ───────");

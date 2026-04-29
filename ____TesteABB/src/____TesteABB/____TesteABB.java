@@ -1,5 +1,7 @@
 package ____TesteABB;
 
+import mackbemvindo.ABB;
+
 public class ____TesteABB {
 
 	public static void main(String[] args) {

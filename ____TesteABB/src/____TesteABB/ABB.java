@@ -149,11 +149,13 @@ public class ABB<T extends Comparable<T>> {
     // Utiliza uma LinkedList funcionando como uma fila auxiliar 
     // (adicionando elementos no final e removendo do começo).
     public void emNivel() {
+        if (raiz == null) return;
         Node<T> noAux;
         LinkedList<Node<T>> fila = new LinkedList<Node<T>>();
         fila.addLast(raiz);
         while (!fila.isEmpty()) {
-            noAux = (Node<T>) fila.pollFirst();
+            noAux = fila.pollFirst();
+            if (noAux == null) continue;
             if (noAux.getFilhoEsquerdo() != null) {
                 fila.addLast(noAux.getFilhoEsquerdo());
             }
@@ -265,17 +267,22 @@ public class ABB<T extends Comparable<T>> {
     // Mudança aqui: Método encarregado de chamar o método que percorre a ABB 
     // e mostra os funcionários que têm idade maior ou igual ao limite (Opção 6)
     public int mostrarPorIdade(int idadeMinima) {
-        return mostrarPorIdade(raiz, idadeMinima);
+        return contarPorIdade(raiz, idadeMinima);
+    }
+
+    // Compatibilidade: wrapper público chamado por Main
+    public int contarPorIdade(int idadeMinima) {
+        return contarPorIdade(raiz, idadeMinima);
     }
 
     // Mudança aqui: Método que percorre a árvore emOrdem filtrando os nós pela idade mínima
-    private int mostrarPorIdade(Node<T> no, int idadeMinima) {
+    private int contarPorIdade(Node<T> no, int idadeMinima) {
         if (no == null) {
             return 0;
         }
 
         int count = 0;
-        count = count + mostrarPorIdade(no.getFilhoEsquerdo(), idadeMinima);
+        count = count + contarPorIdade(no.getFilhoEsquerdo(), idadeMinima);
 
         if (no.getValue() instanceof Funcionario) {
             Funcionario f = (Funcionario) no.getValue();
@@ -285,7 +292,7 @@ public class ABB<T extends Comparable<T>> {
             }
         }
 
-        count = count + mostrarPorIdade(no.getFilhoDireito(), idadeMinima);
+        count = count + contarPorIdade(no.getFilhoDireito(), idadeMinima);
         return count;
     }
 
@@ -377,9 +384,10 @@ public class ABB<T extends Comparable<T>> {
                         }
                     } 
                     else {
-                        node.setValue(node.getFilhoEsquerdo().getValue());
-                        node.setFilhoEsquerdo(node.getFilhoEsquerdo().getFilhoEsquerdo());
-                        node.setFilhoDireito(node.getFilhoEsquerdo().getFilhoDireito());
+                        Node<T> filho = node.getFilhoEsquerdo();
+                        node.setValue(filho.getValue());
+                        node.setFilhoEsquerdo(filho.getFilhoEsquerdo());
+                        node.setFilhoDireito(filho.getFilhoDireito());
                     }
                 } else if (node.getFilhoEsquerdo() == null) {   
                     if (paiRaiz != null) {
@@ -390,9 +398,10 @@ public class ABB<T extends Comparable<T>> {
                         }
                     } 
                     else {
-                        node.setValue(node.getFilhoDireito().getValue());
-                        node.setFilhoEsquerdo(node.getFilhoDireito().getFilhoEsquerdo());
-                        node.setFilhoDireito(node.getFilhoDireito().getFilhoDireito());
+                        Node<T> filho = node.getFilhoDireito();
+                        node.setValue(filho.getValue());
+                        node.setFilhoEsquerdo(filho.getFilhoEsquerdo());
+                        node.setFilhoDireito(filho.getFilhoDireito());
                     }
                 } else {   
                     aux = getMax(node.getFilhoEsquerdo(), node);
