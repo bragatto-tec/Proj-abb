@@ -27,9 +27,7 @@ public class Main {
                     System.out.println("  Opção inválida! Digite um número de 1 a 8. ");
             }
 
-        } while (opcao != 8);
-
-        sc.close();
+        } while (true);
     }
 
     private static void exibirMenu() {
@@ -199,9 +197,7 @@ public class Main {
 
     // OPÇÃO 8 – Sair 
     private static void opcao8_sair() {
-        System.out.print("  Deseja realmente sair do sistema? (S/N): ");
-        String resp = sc.nextLine().trim().toUpperCase();
-        if (resp.equals("S")) {
+        if (confirmarSaida()) {
             System.out.println("\n  Encerrando o sistema. Até logo!");
             System.exit(0);
         } else {
@@ -260,5 +256,11 @@ public class Main {
             for (char v : validos) System.out.print(v + " ");
             System.out.println("***");
         }
+    }
+
+    private static boolean confirmarSaida() {
+        System.out.print("  Deseja realmente sair do sistema? (S/N): ");
+        String resp = sc.nextLine().trim().toUpperCase();
+        return resp.equals("S");
     }
 }
